@@ -11,7 +11,7 @@
 
             <!-- ≃≃# Div com o conteúdo -->
             <div class="post_content">
-            <header class="post_autoria"><span class="post_nome_de_usuario">{{post.user.is_active}}</span> <a class="post_user">@{{ post.user }}</a> <time>.&nbsp;&nbsp;. {{post.data }}</time> <button class="post_tres_pontos"><img src="{% static 'images/posts/icones/tres-pontos.svg' %}"></button></header>
+            <header class="post_autoria"><span class="post_nome_de_usuario">{{post.user.first_name}}</span> <a class="post_user">@{{ post.user }}</a> <time>.&nbsp;&nbsp;. {{post.date }}</time> <button class="post_tres_pontos"><img src="{% static 'images/posts/icones/tres-pontos.svg' %}"></button></header>
 
             <!-- ≃≃# texto do usuário -->
             <p class="post_text">{{post.texto}}</p>
@@ -34,3 +34,23 @@
         </article>
     {% endfor %}
 {% endif %}
+
+<script>
+  function likeCurso(idCurso) {
+    fetch("/cursos/api/like/" + idCurso)
+      .then((response) => response.json())
+      .then((resposta) => {
+        console.log(resposta);
+        if (resposta.like == true) {
+          document.getElementById(`like_${idCurso}`).classList.add("like");
+        } else {
+          document.getElementById("like_" + idCurso).classList.remove("like");
+        }
+        document.getElementById(`likes_count_${idCurso}`).innerHTML =
+          resposta.likes;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+</script>
